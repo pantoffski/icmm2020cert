@@ -1,7 +1,7 @@
 <?php
 require './../../vendor/autoload.php';
 if (!isset($_ENV['isOnHeroku'])) {
-  $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . './../../');
+  $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
   $dotenv->load();
 }
 if (isset($_GET['todo'])) {
@@ -21,7 +21,7 @@ if (isset($_GET['todo'])) {
 
 function runnerStat($id) {
   $ret = [];
-  $d   = json_decode(file_get_contents(__DIR__ . './runnerDat.json'), true);
+  $d   = json_decode(file_get_contents(__DIR__ . '/runnerDat.json'), true);
   foreach ($d as $v) {
     if ($v['bib'] == $id) {
       $ret['runner'] = $v;

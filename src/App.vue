@@ -185,7 +185,9 @@ export default {
           });
       } catch (e) {}
     },
-    drawInfo() {
+    async drawInfo() {
+      while (!this.$refs.cv)
+        await new Promise(resolveWait => window.setTimeout(resolveWait, 10));
       var ctx = this.$refs.cv.getContext("2d");
       ctx.clearRect(0, 0, this.$refs.cv.width, this.$refs.cv.height);
       ctx.font = "150px icmm";
@@ -194,6 +196,7 @@ export default {
       ctx.fillText(`สวัสดีคุณ ${this.bibNo}`, 10, 200);
     },
     setDefaultImg() {
+      if (this.imgIdx == 0) return;
       this.imgIdx = 0;
       if (this.imgSrc == this.defaultImgSrc) return;
       this.imgSrc = require("./assets/cert.png");
@@ -233,13 +236,11 @@ export default {
       this.$http
         .get(`/api/?todo=runnerStat&id=${this.bibNo}`)
         .then(r => {
-          this.runnerStat = r.data?.runner;
-          this.fetchThaiRunImg();
-          this.$nextTick(_=>
-          {
-          this.drawInfo();
-
-          })
+          if (r.data?.runner) {
+            this.runnerStat = r.data?.runner;
+            this.fetchThaiRunImg();
+            this.drawInfo();
+          }
         })
         .catch(e => {});
     },
