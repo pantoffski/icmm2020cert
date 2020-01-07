@@ -1,0 +1,6 @@
+{
+    "require": {
+        "vlucas/phpdotenv": "^4.1",
+        "google/cloud-storage": "^1.16"
+    }
+}
