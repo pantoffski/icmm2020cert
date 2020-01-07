@@ -1,7 +1,9 @@
 <?php
 require './../../vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'./../../');
-$dotenv->load();
+if (!isset($_ENV['isOnHeroku'])) {
+  $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . './../../');
+  $dotenv->load();
+}
 if (isset($_GET['todo'])) {
   if ($_GET['todo'] == 'runnerStat') {
     runnerStat($_GET['id']);
@@ -42,7 +44,7 @@ function imgUpload() {
 
   $d     = json_decode(file_get_contents('php://input'), true);
   $data  = base64_decode(str_replace('data:image/png;base64,', '', $d['d']));
-  $fName = uuid().".png";
+  $fName = uuid() . ".png";
   $bucket->upload(
     $data,
     [
@@ -50,11 +52,11 @@ function imgUpload() {
       'predefinedAcl' => 'publicRead',
     ]
   );
-  echo json_encode(['fName' => 'https://storage.googleapis.com/icmm2020-cert-img/'.$fName]);
+  echo json_encode(['fName' => 'https://storage.googleapis.com/icmm2020-cert-img/' . $fName]);
 }
 
 function thaiRunImgProxy() {
-  $d = json_decode(file_get_contents('php://input'), true);
+  $d  = json_decode(file_get_contents('php://input'), true);
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $d['url']);
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
