@@ -25,19 +25,21 @@ function runnerStat($id) {
 
 }
 function imgUpload() {
+  $keyFile = [
+    "type"                        => "service_account",
+    "project_id"                  => "icmm2020cert",
+    "private_key_id"              => $_ENV['private_key_id'],
+    "private_key"                 => $_ENV['private_key'],
+    "client_email"                => $_ENV['client_email'],
+    "client_id"                   => $_ENV['client_id'],
+    "auth_uri"                    => "https://accounts.google.com/o/oauth2/auth",
+    "token_uri"                   => "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url" => "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url"        => $_ENV['client_x509_cert_url'],
+  ];
+  print_r($keyFile);
   $storage = new \Google\Cloud\Storage\StorageClient([
-    'keyFile' => [
-      "type"                        => "service_account",
-      "project_id"                  => "icmm2020cert",
-      "private_key_id"              => $_ENV['private_key_id'],
-      "private_key"                 => $_ENV['private_key'],
-      "client_email"                => $_ENV['client_email'],
-      "client_id"                   => $_ENV['client_id'],
-      "auth_uri"                    => "https://accounts.google.com/o/oauth2/auth",
-      "token_uri"                   => "https://oauth2.googleapis.com/token",
-      "auth_provider_x509_cert_url" => "https://www.googleapis.com/oauth2/v1/certs",
-      "client_x509_cert_url"        => $_ENV['client_x509_cert_url'],
-    ],
+    'keyFile' => $keyFile,
 
   ]);
   $bucket = $storage->bucket('icmm2020-cert-img');
