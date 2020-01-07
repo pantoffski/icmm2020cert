@@ -20,7 +20,14 @@ if (isset($_GET['todo'])) {
 }
 
 function runnerStat($id) {
-  $ret = ['bibNo' => 1234, 'gunTime' => 'gunTime', 'chipTime' => 'chipTime', 'cat' => 'mini', 'gender' => 'male', 'overAll' => mt_rand(1, 2000)];
+  $ret = [];
+  $d   = json_decode(file_get_contents(__DIR__ . './runnerDat.json'), true);
+  foreach ($d as $v) {
+    if ($v['bib'] == $id) {
+      $ret['runner'] = $v;
+    }
+
+  }
   echo json_encode($ret);
 
 }

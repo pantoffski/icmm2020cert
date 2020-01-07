@@ -193,18 +193,18 @@ export default {
       var maxX = (scale - 1) / 2;
       var minX = 1 + maxX - (this.imgW * scale) / this.containerWidth;
       var minY = 1 + maxY - (this.imgH * scale) / this.containerHeight;
-      console.log(
-        "scale",
-        scale,
-        "maxX",
-        maxX,
-        "maxY",
-        maxY,
-        "minX",
-        minX,
-        "minY",
-        minY
-      );
+      // console.log(
+      //   "scale",
+      //   scale,
+      //   "maxX",
+      //   maxX,
+      //   "maxY",
+      //   maxY,
+      //   "minX",
+      //   minX,
+      //   "minY",
+      //   minY
+      // );
 
       if (this.translateX < minX) this.translateX = minX;
       if (this.translateY < minY) this.translateY = minY;

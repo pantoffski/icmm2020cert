@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <input type="text" class="bibTxt" v-model="bibNo" placeholder=" หมายเลข bib" />
-    <div v-if="bibNo">
+    <div v-if="runnerStat">
       <div class="home" :style="{'min-height':(containerWidth)+'px'}">
         <zoomer
           v-if="isShow"
@@ -150,6 +150,8 @@ export default {
       var d = ((1 - this.scale) * w) / 2;
       ctx.translate((this.x + d) * s, (this.y + d) * s);
       ctx.scale(this.scale * s, this.scale * s);
+      while (!this.img4DrawSrc)
+        await new Promise(resolveWait => window.setTimeout(resolveWait, 10));
       ctx.drawImage(this.$refs.img4draw, 0, 0);
       var ctx2 = this.$refs.cv;
       ctx.resetTransform();
@@ -165,7 +167,6 @@ export default {
         })
         .finally(_ => {});
       console.log(imgUrl);
-
       this.isGenCert = false;
       try {
         window.liff
@@ -207,6 +208,7 @@ export default {
       if (this.imgIdx == idx) return;
       this.imgIdx = idx;
       this.imgSrc = url;
+      this.img4DrawSrc = null;
       this.imgW = w;
       this.imgH = h;
       this.disabledZoom = false;
@@ -227,12 +229,17 @@ export default {
     },
     fetchRunnerStat() {
       this.runnerStat = null;
+      this.setDefaultImg();
       this.$http
         .get(`/api/?todo=runnerStat&id=${this.bibNo}`)
         .then(r => {
-          this.runnerStat = r.data;
+          this.runnerStat = r.data?.runner;
           this.fetchThaiRunImg();
+          this.$nextTick(_=>
+          {
           this.drawInfo();
+
+          })
         })
         .catch(e => {});
     },
@@ -281,9 +288,8 @@ export default {
   async mounted() {
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
-    while (!window.liff) {
+    while (!window.liff)
       await new Promise(resolveWait => window.setTimeout(resolveWait, 10));
-    }
     window.liff.init({
       liffId: process.env.VUE_APP_LIFF_ID
     });
