@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.4/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+  </head>
+  <body>
+    <div id="app">
+      <button @click="browse">browse excel</button>
+      <br />
+      <br />
+      <textarea>{{dat}}</textarea>
+      <input
+        type="file"
+        @change="processExcel"
+        ref="excelInpFile"
+        style="display:none;"
+      />
+    </div>
+    <script>
+      var _app = new Vue({
+        el: "#app",
+        data: { dat: null },
+        methods: {
+          browse() {
+            this.$refs.excelInpFile.click();
+          },
+          processExcel() {
+            if (!this.$refs.excelInpFile.files[0]) return;
+            var inp = this.$refs.excelInpFile.files[0];
+            if (!inp.name.match(/(.xls|.xlsx|.xlsb)$/i)) return;
+            var _this = this;
+            var reader = new FileReader();
+            reader.onload = async function(file) {
+              var data = file.target.result;
+              var workbook = XLSX.read(data, {
+                type: "binary"
+              });
+              var i = 1,
+                isOk = true,
+                keys = {},
+                dat = [];
+              var s = workbook.Sheets[workbook.SheetNames[0]];
+              for (var k of "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")) {
+                if (s[k + 1]) {
+                  keys[s[k + "1"].w] = k;
+                }
+              }
+              do {
+                i++;
+                var o = {};
+                for (var k in keys) {
+                  if (!s[keys[k] + i]) {
+                    isOk = false;
+                  } else {
+                    o[k] = s[keys[k] + i].w;
+                  }
+                }
+                if (isOk) dat.push(o);
+              } while (isOk);
+              _this.dat = JSON.stringify(dat);
+              _this.$refs.excelInpFile.value = "";
+            };
+            this.$nextTick(_ => {
+              reader.readAsBinaryString(inp);
+            });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
