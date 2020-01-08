@@ -2,7 +2,7 @@
   <div id="app">
     <input type="text" class="bibTxt" v-model="bibNo" placeholder=" หมายเลข bib" />
     <div v-if="runnerStat">
-      <div class="home" :style="{'min-height':(containerWidth)+'px'}">
+      <div class="home" :style="{'min-height':(containerWidth)+'px'}" @mouseout="drawInfo">
         <zoomer
           v-if="isShow"
           :imgW="imgW"
@@ -93,8 +93,8 @@ export default {
       downloadedImg: null,
       wWidth: 1,
       wHeight: 1,
-      ox: 0,
-      oy: 0,
+      ox: 274,
+      oy: 140,
       minSize: 450
     };
   },
@@ -192,12 +192,17 @@ export default {
         await new Promise(resolveWait => window.setTimeout(resolveWait, 10));
       var ctx = this.$refs.cv.getContext("2d");
       ctx.clearRect(0, 0, this.$refs.cv.width, this.$refs.cv.height);
-      if(this.imgIdx)
+      if(this.imgIdx){
       ctx.drawImage(this.$refs.mask,0,0);
-      ctx.font = "150px icmm";
-      ctx.font;
-      ctx.fillStyle = "orange";
-      //ctx.fillText(`สวัสดีคุณ ${this.bibNo}`, 10, 200);
+      }else{
+      ctx.font = "190px i_bold";
+      ctx.fillStyle = "#dd98b3";
+      ctx.fillText(`01:23:56`, 385,585);
+      ctx.font = "100px i_slim";
+      ctx.fillStyle = "#7a7a7a";
+      ctx.fillText(`ชัยุญูชนะ ริลวัชรารัง`, 270, 215);
+
+      }
     },
     setDefaultImg() {
       if (this.imgIdx == 0) return;
@@ -287,6 +292,8 @@ export default {
     }
   },
   watch: {
+    ox(){this.drawInfo()},
+    oy(){this.drawInfo()},
     bibNo() {
       this.fetchRunnerStat();
     }
@@ -307,8 +314,12 @@ export default {
 </script>
 <style lang="scss">
 @font-face {
-  font-family: "icmm";
-  src: url("./assets/THSarabun.ttf");
+  font-family: "i_slim";
+  src: url("./assets/i_slim.ttf");
+}
+@font-face {
+  font-family: "i_bold";
+  src: url("./assets/i_bold.ttf");
 }
 body {
   margin: 0;
