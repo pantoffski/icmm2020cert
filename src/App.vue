@@ -9,7 +9,7 @@
           :imgH="imgH"
           :disabled="disabledZoom"
           @size="newSize"
-          style="border: solid 1px silver;"
+          style="border: solid 1px silver;box-sizing:border-box;"
           :style="containerStyle"
         >
           <img :src="imgSrc" style />
@@ -56,6 +56,7 @@
       :src="img4DrawSrc"
       style="position:absolute;width:1px;height:1px;top:-10px;"
     />
+    <img ref="mask" src="./assets/cert2.png" style="position:absolute;width:1px;height:1px;top:-10px;" />
     <input type="file" accept="image/*" @change="doUpload" ref="inpFile" style="display:none;" />
   </div>
 </template>
@@ -70,9 +71,10 @@ export default {
     return {
       bibNo: "",
       disabledZoom: true,
-      defaultImgSrc: require("./assets/cert.png"),
-      imgSrc: require("./assets/cert.png"),
-      img4DrawSrc: require("./assets/cert.png"),
+      defaultImgSrc: require("./assets/cert1.png"),
+      defaultImgSrc2: require("./assets/cert2.png"),
+      imgSrc: require("./assets/cert1.png"),
+      img4DrawSrc: require("./assets/cert1.png"),
       imgW: 1000,
       imgH: 1000,
       imgIdx: 0,
@@ -190,17 +192,19 @@ export default {
         await new Promise(resolveWait => window.setTimeout(resolveWait, 10));
       var ctx = this.$refs.cv.getContext("2d");
       ctx.clearRect(0, 0, this.$refs.cv.width, this.$refs.cv.height);
+      if(this.imgIdx)
+      ctx.drawImage(this.$refs.mask,0,0);
       ctx.font = "150px icmm";
       ctx.font;
       ctx.fillStyle = "orange";
-      ctx.fillText(`สวัสดีคุณ ${this.bibNo}`, 10, 200);
+      //ctx.fillText(`สวัสดีคุณ ${this.bibNo}`, 10, 200);
     },
     setDefaultImg() {
       if (this.imgIdx == 0) return;
       this.imgIdx = 0;
       if (this.imgSrc == this.defaultImgSrc) return;
-      this.imgSrc = require("./assets/cert.png");
-      this.img4DrawSrc = require("./assets/cert.png");
+      this.imgSrc = require("./assets/cert1.png");
+      this.img4DrawSrc = require("./assets/cert1.png");
       this.imgW = 1000;
       this.imgH = 1000;
       this.disabledZoom = true;
@@ -225,6 +229,7 @@ export default {
       this.isShow = false;
       this.$nextTick(_ => {
         this.isShow = true;
+        this.drawInfo();
       });
     },
     newSize(e) {
