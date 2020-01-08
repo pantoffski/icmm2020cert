@@ -51,18 +51,13 @@
       </button>
     </div>
     <img ref="img" :src="imgSrc" style="position:absolute;width:1px;height:1px;top:-10px;" />
-    <img
-      ref="img4draw"
-      :src="img4DrawSrc"
-      style="position:absolute;width:1px;height:1px;top:-10px;"
-    />
-    <img ref="mask" src="./assets/cert2.png" style="position:absolute;width:1px;height:1px;top:-10px;" />
     <input type="file" accept="image/*" @change="doUpload" ref="inpFile" style="display:none;" />
-    <div 
-      style="position:absolute;width:1px;height:1px;top:-1000px;">
+    <div style="position:absolute;width:1px;height:1px;top:-1000px;overflow:hidden;">
       <em style="font-family:'i_slim';">a</em>
       <em style="font-family:'i_bold';">a</em>
-      </div>
+      <img ref="img4draw" :src="img4DrawSrc" />
+      <img ref="mask" src="./assets/cert2.png" />
+    </div>
   </div>
 </template>
 <script>
@@ -100,6 +95,7 @@ export default {
       wHeight: 1,
       ox: 274,
       oy: 140,
+      name:'ชัยชนะ นิลวัรชรารัง',
       minSize: 450
     };
   },
@@ -197,16 +193,28 @@ export default {
         await new Promise(resolveWait => window.setTimeout(resolveWait, 10));
       var ctx = this.$refs.cv.getContext("2d");
       ctx.clearRect(0, 0, this.$refs.cv.width, this.$refs.cv.height);
-      if(this.imgIdx){
-      ctx.drawImage(this.$refs.mask,0,0);
-      }else{
-      ctx.font = "190px i_bold";
-      ctx.fillStyle = "#dd98b3";
-      ctx.fillText(`01:23:56`, 385,585);
-      ctx.font = "100px i_slim";
-      ctx.fillStyle = "#7a7a7a";
-      ctx.fillText(`ชัยุญูชนะ ริลวัชรารัง`, 270, 215);
-
+      if (this.imgIdx) {
+        ctx.drawImage(this.$refs.mask, 0, 0);
+        ctx.font = "190px i_bold";
+        ctx.fillStyle = "#dd98b3";
+        ctx.fillText(`01:23:56`,297,834);
+        ctx.font = "60px txt";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(`01:23:56`, 557,902);
+      } else {
+        ctx.font = "190px i_bold";
+        ctx.fillStyle = "#dd98b3";
+        ctx.fillText(`01:23:56`, 385, 585);
+        ctx.font = "100px i_slim";
+        ctx.fillStyle = "#7a7a7a";
+        // ctx.fillText(`ชัยุญูชนะ ริลวัชรารัง`, 270, 215);
+        ctx.fillText(this.name, 270, 215);
+        ctx.font = "60px txt";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(`E35-708`, 560, 288);
+        ctx.font = "60px txt";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(`01:27:56`, 642, 656);
       }
     },
     setDefaultImg() {
@@ -297,8 +305,12 @@ export default {
     }
   },
   watch: {
-    ox(){this.drawInfo()},
-    oy(){this.drawInfo()},
+    ox() {
+      this.drawInfo();
+    },
+    oy() {
+      this.drawInfo();
+    },
     bibNo() {
       this.fetchRunnerStat();
     }
@@ -325,6 +337,10 @@ export default {
 @font-face {
   font-family: "i_bold";
   src: url("./assets/i_bold.ttf");
+}
+@font-face {
+  font-family: "txt";
+  src: url("./assets/txt.ttf");
 }
 body {
   margin: 0;
