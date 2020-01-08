@@ -204,7 +204,7 @@ export default {
       } else {
         ctx.font = "190px i_bold";
         ctx.fillStyle = "#dd98b3";
-        ctx.fillText(`01:23:56`, 385, 585);
+        ctx.fillText(`01:27:35`, 385, 585);
         var size = 100;
         ctx.font = `${size}px i_slim`;
         ctx.fillStyle = "#7a7a7a";
@@ -217,7 +217,7 @@ export default {
         ctx.fillText(`E35-708`, 560, 288);
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(`01:27:56`, 642, 656);
+        ctx.fillText(`01:27:35`, 642, 656);
       }
     },
     setDefaultImg() {
