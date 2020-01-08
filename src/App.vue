@@ -58,6 +58,11 @@
     />
     <img ref="mask" src="./assets/cert2.png" style="position:absolute;width:1px;height:1px;top:-10px;" />
     <input type="file" accept="image/*" @change="doUpload" ref="inpFile" style="display:none;" />
+    <div 
+      style="position:absolute;width:1px;height:1px;top:-1000px;">
+      <em style="font-family:'i_slim';">a</em>
+      <em style="font-family:'i_bold';">a</em>
+      </div>
   </div>
 </template>
 <script>
