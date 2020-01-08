@@ -95,7 +95,7 @@ export default {
       wHeight: 1,
       ox: 274,
       oy: 140,
-      name:'ชัยชนะ นิลวัรชรารัง',
+      name: "ชัยชนะ นิลวัรชรารัง",
       minSize: 450
     };
   },
@@ -197,17 +197,20 @@ export default {
         ctx.drawImage(this.$refs.mask, 0, 0);
         ctx.font = "190px i_bold";
         ctx.fillStyle = "#dd98b3";
-        ctx.fillText(`01:23:56`,297,834);
+        ctx.fillText(`01:23:56`, 297, 834);
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(`01:23:56`, 557,902);
+        ctx.fillText(`01:23:56`, 557, 902);
       } else {
         ctx.font = "190px i_bold";
         ctx.fillStyle = "#dd98b3";
         ctx.fillText(`01:23:56`, 385, 585);
-        ctx.font = "100px i_slim";
+        var size = 100;
+        ctx.font = `${size}px i_slim`;
         ctx.fillStyle = "#7a7a7a";
-        // ctx.fillText(`ชัยุญูชนะ ริลวัชรารัง`, 270, 215);
+        while (ctx.measureText(this.name).width > 680)
+          ctx.font = `${--size}px i_slim`;
+        console.log(ctx.measureText(this.name).width);
         ctx.fillText(this.name, 270, 215);
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
@@ -305,6 +308,9 @@ export default {
     }
   },
   watch: {
+    name() {
+      this.drawInfo();
+    },
     ox() {
       this.drawInfo();
     },
@@ -414,7 +420,10 @@ body {
     display: flex;
     width: 100px;
     height: 100px;
+    box-sizing: border-box;
     background-size: cover;
+    border-radius: 5px;
+    margin:2px;
     &.loading {
       overflow: hidden;
       hr {
