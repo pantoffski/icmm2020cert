@@ -213,7 +213,7 @@ export default {
         ctx.fillText(this.runnerStat.gun, 297, 836);
         ctx.font = "64px txt";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(this.runnerStat.chip, 557, 902);
+        ctx.fillText(this.runnerStat.chip, 557, 905);
         ctx.scale(0.714, 0.714);
         ctx.drawImage(this.$refs.bearImg, 1340, 1350);
         // ctx.drawImage(this.$refs.bearImg, this.ox, this.oy);
@@ -229,9 +229,9 @@ export default {
           ctx.font = `${--size}px i_slim`;
         console.log(ctx.measureText(this.runnerStat.name).width);
         ctx.fillText(this.runnerStat.name, 270, 215);
-        ctx.font = "60px txt";
+        ctx.font = "62px txt";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(this.runnerStat.bib, 560, 288);
+        ctx.fillText(this.runnerStat.bib, 560, 287);
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
         ctx.fillText(this.runnerStat.chip, 642, 656);
@@ -460,11 +460,12 @@ body {
     &.loading {
       overflow: hidden;
       hr {
-        width: 100px;
+        width: 70px;
+        height: 70px;
         border: 5px solid cyan;
         border-radius: 500px;
         border-top-color: transparent;
-        margin: 10px;
+        margin: 8px;
         animation: spin 1s infinite;
       }
     }
