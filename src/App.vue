@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <input type="text" class="bibTxt" v-model="bibNo" placeholder=" หมายเลข bib" />
+    <input type="text" class="bibTxt" ref="bibNo" v-model="bibNo" placeholder=" หมายเลข bib" />
     <div v-if="runnerStat">
-      <div class="home" :style="{'min-height':(containerWidth)+'px'}" @mouseout="drawInfo">
+      <div class="home" :style="{'min-height':(containerWidth)+'px'}">
         <zoomer
           v-if="isShow"
           :imgW="imgW"
@@ -57,10 +57,13 @@
       <em style="font-family:'i_bold';">a</em>
       <img ref="img4draw" :src="img4DrawSrc" />
       <img ref="mask" src="./assets/cert2.png" />
+      <img ref="bearImg" :src="bearImg" />
+      <img src="blue.png" />
     </div>
   </div>
 </template>
 <script>
+import _debounce from "lodash.debounce";
 import imageMixin from "./mixins/imageMixin.vue";
 import Zoomer from "./components/Zoomer.vue";
 export default {
@@ -89,12 +92,19 @@ export default {
       isThaiRunImg: false,
       isLoadingThaiRunImg: false,
       thaiRunImgType: "preview",
+      bears: {
+        red: require("./assets/red.png"),
+        green: require("./assets/green.png"),
+        yellow: require("./assets/yellow.png"),
+        orange: require("./assets/orange.png"),
+        blue: require("./assets/blue.png")
+      },
       thaiRunImg: [],
       downloadedImg: null,
       wWidth: 1,
       wHeight: 1,
-      ox: 274,
-      oy: 140,
+      ox: 660,
+      oy: 660,
       name: "ชัยชนะ นิลวัรชรารัง",
       minSize: 450
     };
@@ -192,6 +202,7 @@ export default {
       while (!this.$refs.cv)
         await new Promise(resolveWait => window.setTimeout(resolveWait, 10));
       var ctx = this.$refs.cv.getContext("2d");
+      ctx.resetTransform();
       ctx.clearRect(0, 0, this.$refs.cv.width, this.$refs.cv.height);
       if (this.imgIdx) {
         ctx.drawImage(this.$refs.mask, 0, 0);
@@ -201,6 +212,7 @@ export default {
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
         ctx.fillText(this.runnerStat.chip, 557, 902);
+        ctx.drawImage(this.$refs.bearImg, 960, 963);
       } else {
         ctx.font = "190px i_bold";
         ctx.fillStyle = "#dd98b3";
@@ -218,6 +230,9 @@ export default {
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
         ctx.fillText(this.runnerStat.chip, 642, 656);
+        ctx.scale(1.4, 1.4);
+        ctx.drawImage(this.$refs.bearImg, 647, 660);
+        //ctx.drawImage(this.$refs.bearImg, this.ox, this.oy);
       }
     },
     setDefaultImg() {
@@ -256,7 +271,10 @@ export default {
     newSize(e) {
       (this.x = e.x), (this.y = e.y), (this.scale = e.scale);
     },
-    fetchRunnerStat() {
+    blurInput: _debounce(function() {
+      this.$refs.bibNo.blur();
+    }, 700),
+    fetchRunnerStat: _debounce(function() {
       this.runnerStat = null;
       this.setDefaultImg();
       this.$http
@@ -266,10 +284,11 @@ export default {
             this.runnerStat = r.data?.runner;
             this.fetchThaiRunImg();
             this.drawInfo();
+            this.blurInput();
           }
         })
         .catch(e => {});
-    },
+    }, 500),
     fetchThaiRunImg() {
       this.thaiRunImg = [];
       try {
@@ -295,6 +314,11 @@ export default {
     }
   },
   computed: {
+    bearImg() {
+      console.log("bearimg", this.runnerStat?.color.toLowerCase() || "blue");
+
+      return this.bears[this.runnerStat?.color.toLowerCase() || "blue"];
+    },
     bibNumOnly() {
       return this.bibNo
         .trim()
