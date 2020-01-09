@@ -200,11 +200,11 @@ export default {
         ctx.fillText(`01:23:56`, 297, 834);
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(`01:23:56`, 557, 902);
+        ctx.fillText(`01:27:27`, 557, 902);
       } else {
         ctx.font = "190px i_bold";
         ctx.fillStyle = "#dd98b3";
-        ctx.fillText(`01:27:35`, 385, 585);
+        ctx.fillText(`01:23:56`, 385, 585);
         var size = 100;
         ctx.font = `${size}px i_slim`;
         ctx.fillStyle = "#7a7a7a";
@@ -260,7 +260,7 @@ export default {
       this.runnerStat = null;
       this.setDefaultImg();
       this.$http
-        .get(`/api/?todo=runnerStat&id=${this.bibNo}`)
+        .get(`/api/?todo=runnerStat&id=${this.bibNumOnly}`)
         .then(r => {
           if (r.data?.runner) {
             this.runnerStat = r.data?.runner;
@@ -272,14 +272,13 @@ export default {
     },
     fetchThaiRunImg() {
       this.thaiRunImg = [];
-      var bibNo = this.bibNo;
       try {
         this.cancelSource.cancel();
       } catch (e) {}
       this.cancelSource = this.$http.CancelToken.source();
       this.isLoadingThaiRunImg = true;
       this.$http
-        .get(`/api/?todo=thaiRunImg&id=${this.bibNo}`, {
+        .get(`/api/?todo=thaiRunImg&id=${this.bibNumOnly}`, {
           cancelToken: this.cancelSource.token
         })
         .then(r => {
@@ -296,6 +295,12 @@ export default {
     }
   },
   computed: {
+    bibNumOnly() {
+      return this.bibNo
+        .trim()
+        .split("-")
+        .pop();
+    },
     containerWidth() {
       var v = this.wWidth - 16;
       return v > this.minSize ? this.minSize : v;
@@ -423,7 +428,7 @@ body {
     box-sizing: border-box;
     background-size: cover;
     border-radius: 5px;
-    margin:2px;
+    margin: 2px;
     &.loading {
       overflow: hidden;
       hr {
