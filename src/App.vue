@@ -8,6 +8,7 @@
           :imgW="imgW"
           :imgH="imgH"
           :disabled="disabledZoom"
+          :initScale='initScale'
           @size="newSize"
           style="border: solid 1px silver;box-sizing:border-box;"
           :style="containerStyle"
@@ -55,6 +56,7 @@
     <div style="position:absolute;width:1px;height:1px;top:-1000px;overflow:hidden;">
       <em style="font-family:'i_slim';">a</em>
       <em style="font-family:'i_bold';">a</em>
+      <em style="font-family:'txt';">a</em>
       <img ref="img4draw" :src="img4DrawSrc" />
       <img ref="mask" src="./assets/cert2.png" />
       <img ref="bearImg" :src="bearImg" />
@@ -314,6 +316,12 @@ export default {
     }
   },
   computed: {
+    initScale(){
+ return  Math.max(
+          this.containerWidth / this.imgW,
+          this.containerWidth / this.imgH
+        );
+    },
     bearImg() {
       console.log("bearimg", this.runnerStat?.color.toLowerCase() || "blue");
 

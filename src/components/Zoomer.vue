@@ -32,6 +32,7 @@ export default {
     imgH: { type: Number, default: 500 },
     minScale: { type: Number, default: 1 },
     maxScale: { type: Number, default: 5 },
+    initScale: { type: Number, default: 0.01 },
     zoomed: { type: Boolean, default: false },
     resetTrigger: { type: Number, default: 1e5 },
     aspectRatio: { type: Number, default: 1 },
@@ -56,7 +57,7 @@ export default {
       animTranslateX: 0,
       translateY: 0,
       animTranslateY: 0,
-      scale: 0.01,
+      scale: this.initScale,
       animScale: 1,
       // Mouse states
       lastFullWheelTime: 0,
@@ -398,6 +399,7 @@ export default {
       }
       // console.log('onTouchMove', this.pointerPosX, this.pointerPosY)
     }
+  },created(){console.log('created scale ',this.scale);
   }
 };
 </script>
