@@ -6,10 +6,10 @@ if (!isset($_ENV['isOnHeroku'])) {
 }
 if (isset($_GET['todo'])) {
   if ($_GET['todo'] == 'runnerStat') {
-    runnerStat($_GET['id']);
+    runnerStat(preg_replace("/[^0-9]/", "", $_GET['id']));
   }
   if ($_GET['todo'] == 'thaiRunImg') {
-    thairunImg($_GET['id']);
+    thairunImg(preg_replace("/[^0-9]/", "", $_GET['id']));
   }
   if ($_GET['todo'] == 'thaiRunImgProxy') {
     thaiRunImgProxy();
@@ -20,16 +20,14 @@ if (isset($_GET['todo'])) {
 }
 
 function runnerStat($id) {
-  $ret = [];
-  $d   = json_decode(file_get_contents(__DIR__ . '/runnerDat.json'), true);
+  $d = json_decode(file_get_contents(__DIR__ . '/runnerDat.json'), true);
   foreach ($d as $v) {
-    if ($v['bib'] == $id) {
-      $ret['runner'] = $v;
+    $bib = explode('-', $v['bib']);
+    if (array_pop($bib) == $id) {
+      echo json_encode(['runner'=>$v]);
+      die;
     }
-
   }
-  echo json_encode($ret);
-
 }
 function imgUpload() {
   $keyFile = [

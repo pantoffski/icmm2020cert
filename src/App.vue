@@ -197,27 +197,27 @@ export default {
         ctx.drawImage(this.$refs.mask, 0, 0);
         ctx.font = "190px i_bold";
         ctx.fillStyle = "#dd98b3";
-        ctx.fillText(`01:23:56`, 297, 834);
+        ctx.fillText(this.runnerStat.gun, 297, 834);
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(`01:27:27`, 557, 902);
+        ctx.fillText(this.runnerStat.chip, 557, 902);
       } else {
         ctx.font = "190px i_bold";
         ctx.fillStyle = "#dd98b3";
-        ctx.fillText(`01:23:56`, 385, 585);
+        ctx.fillText(this.runnerStat.gun, 385, 585);
         var size = 100;
         ctx.font = `${size}px i_slim`;
         ctx.fillStyle = "#7a7a7a";
-        while (ctx.measureText(this.name).width > 680)
+        while (ctx.measureText(this.runnerStat.name).width > 680)
           ctx.font = `${--size}px i_slim`;
-        console.log(ctx.measureText(this.name).width);
-        ctx.fillText(this.name, 270, 215);
+        console.log(ctx.measureText(this.runnerStat.name).width);
+        ctx.fillText(this.runnerStat.name, 270, 215);
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(`E35-708`, 560, 288);
+        ctx.fillText(this.runnerStat.bib, 560, 288);
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(`01:27:35`, 642, 656);
+        ctx.fillText(this.runnerStat.chip, 642, 656);
       }
     },
     setDefaultImg() {
