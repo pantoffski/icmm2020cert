@@ -8,7 +8,6 @@
           :imgW="imgW"
           :imgH="imgH"
           :disabled="disabledZoom"
-          :initScale='initScale'
           @size="newSize"
           style="border: solid 1px silver;box-sizing:border-box;"
           :style="containerStyle"
@@ -58,6 +57,7 @@
       <em style="font-family:'i_bold';">a</em>
       <em style="font-family:'txt';">a</em>
       <img ref="img4draw" :src="img4DrawSrc" />
+      <img ref="default" src="./assets/cert1.png" />
       <img ref="mask" src="./assets/cert2.png" />
       <img ref="bearImg" :src="bearImg" />
       <img src="blue.png" />
@@ -210,12 +210,15 @@ export default {
         ctx.drawImage(this.$refs.mask, 0, 0);
         ctx.font = "190px i_bold";
         ctx.fillStyle = "#dd98b3";
-        ctx.fillText(this.runnerStat.gun, 297, 834);
-        ctx.font = "60px txt";
+        ctx.fillText(this.runnerStat.gun, 297, 836);
+        ctx.font = "64px txt";
         ctx.fillStyle = "#ffffff";
         ctx.fillText(this.runnerStat.chip, 557, 902);
-        ctx.drawImage(this.$refs.bearImg, 960, 963);
+        ctx.scale(0.714, 0.714);
+        ctx.drawImage(this.$refs.bearImg, 1340, 1350);
+        // ctx.drawImage(this.$refs.bearImg, this.ox, this.oy);
       } else {
+        ctx.drawImage(this.$refs.default, 0, 0);
         ctx.font = "190px i_bold";
         ctx.fillStyle = "#dd98b3";
         ctx.fillText(this.runnerStat.gun, 385, 585);
@@ -232,9 +235,8 @@ export default {
         ctx.font = "60px txt";
         ctx.fillStyle = "#ffffff";
         ctx.fillText(this.runnerStat.chip, 642, 656);
-        ctx.scale(1.4, 1.4);
-        ctx.drawImage(this.$refs.bearImg, 647, 660);
-        //ctx.drawImage(this.$refs.bearImg, this.ox, this.oy);
+        ctx.drawImage(this.$refs.bearImg, 902, 923);
+        // ctx.drawImage(this.$refs.bearImg, this.ox, this.oy);
       }
     },
     setDefaultImg() {
@@ -316,12 +318,6 @@ export default {
     }
   },
   computed: {
-    initScale(){
- return  Math.max(
-          this.containerWidth / this.imgW,
-          this.containerWidth / this.imgH
-        );
-    },
     bearImg() {
       console.log("bearimg", this.runnerStat?.color.toLowerCase() || "blue");
 
