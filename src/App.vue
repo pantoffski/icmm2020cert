@@ -60,7 +60,11 @@
       <img ref="default" src="./assets/cert1.png" />
       <img ref="mask" src="./assets/cert2.png" />
       <img ref="bearImg" :src="bearImg" />
-      <img src="blue.png" />
+      <img :src="bears.red" />
+      <img :src="bears.green" />
+      <img :src="bears.yellow" />
+      <img :src="bears.orange" />
+      <img :src="bears.blue" />
     </div>
   </div>
 </template>
