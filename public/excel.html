@@ -5,7 +5,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.4/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
-    <script src="color.js"></script>
+    <script src="rawData.js"></script>
   </head>
   <body>
     <div id="app">
@@ -39,8 +39,8 @@
               });
               var i = 1,
                 isOk = true,
-                keys = { bib: 1, name: 1, gun: 1, chip: 1 },
-                dat = [];
+                keys = { bib: 1, gun: 1, chip: 1 },
+                stat = {};
 
               var s = workbook.Sheets[workbook.SheetNames[0]];
               for (var k of "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")) {
@@ -54,17 +54,25 @@
                 var o = {};
                 for (var k in keys) {
                   if (!s[keys[k] + i]) {
-                    isOk = false;
-                    console.log("stop at", i);
+                    if (k == "bib") {
+                      isOk = false;
+                      console.log("stop at", i);
+                    } else {
+                      o[k] = "--:--:--";
+                    }
                   } else {
                     o[k] = ("" + s[keys[k] + i].w).trim();
+                    o[k] = o[k] ? o[k] : "--:--:--";
                   }
                 }
-                var color = bibColor.filter(v => v.bib == o.bib);
-                color = color[0] ? color[0].color : "blue";
-                o.color = color;
-                if (isOk) dat.push(o);
+                if (isOk) stat[o.bib] = o;
               } while (isOk);
+              var dat = [];
+              window.raw.forEach(v => {
+                v.gun = stat[v.bib] ? stat[v.bib].gun : "--:--:--";
+                v.chip = stat[v.bib] ? stat[v.bib].chip : "--:--:--";
+                dat.push(v);
+              });
               var d = JSON.stringify(dat);
               console.log(d);
 
