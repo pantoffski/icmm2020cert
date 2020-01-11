@@ -49,6 +49,10 @@
       <button :class="{'certBtn':true, 'busy':isGenCert}" @click="drawCert">
         <hr />download cert
       </button>
+      <em v-if="imgIdx>1" @click="openThaiRunLink" class="thaiRunLink">
+        * ท่านสามารถซื้อรูปความละเอียดสูงได้ที่
+        <u>https://photo.thai.run/icmm2020</u>
+      </em>
     </div>
     <img ref="img" :src="imgSrc" style="position:absolute;width:1px;height:1px;top:-10px;" />
     <input type="file" accept="image/*" @change="doUpload" ref="inpFile" style="display:none;" />
@@ -116,6 +120,12 @@ export default {
     };
   },
   methods: {
+    openThaiRunLink() {
+      window.liff.openWindow({
+        url: "https://photo.thai.run/icmm2020",
+        external: true
+      });
+    },
     browse() {
       this.$refs.inpFile.click();
     },
@@ -447,6 +457,7 @@ body {
 }
 .bg4sel {
   margin: 8px;
+  margin-bottom: 30px;
   display: flex;
   width: calc(100vw - 16px);
   overflow-x: scroll;
@@ -474,6 +485,9 @@ body {
       }
     }
   }
+}
+.thaiRunLink {
+  color: rgb(59, 59, 241);
 }
 @keyframes spin {
   0% {
